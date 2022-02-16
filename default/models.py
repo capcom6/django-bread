@@ -1,5 +1,5 @@
-from turtle import position
 from django.db import models
+from .storage import photoStorage
 
 # Create your models here.
 
@@ -92,6 +92,7 @@ class Recipe(TimestampedModel):
         Program, on_delete=models.RESTRICT, verbose_name='программа')
     weight = models.PositiveIntegerField('вес в граммах')
     ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient')
+    photo = models.ImageField('фотография', blank=True, null=True, storage=photoStorage)
 
     def __str__(self):
         return self.name

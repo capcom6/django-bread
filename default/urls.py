@@ -12,3 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns = [
+    
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
