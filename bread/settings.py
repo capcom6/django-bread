@@ -29,12 +29,14 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fr+mn0pd38qx(m5(#g(!a!vpu0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', True) == 'True'
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = [os.getenv('WEBSITE_HOSTNAME', 'localhost')]
+CSRF_TRUSTED_ORIGINS = ['https://' + os.getenv('WEBSITE_HOSTNAME', 'localhost')]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,6 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -90,6 +93,9 @@ else:
         'PASSWORD': os.getenv('DB_PASSWORD'),
         'HOST': os.getenv('DB_HOST', '127.0.0.1'),
         'PORT': os.getenv('DB_PORT', 3306),
+        'OPTIONS': {
+            'ssl': {}
+        }
     }
 
 DATABASES = {
@@ -131,6 +137,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+STATIC_ROOT = 'static/'
 STATIC_URL = 'static/'
 
 MEDIA_ROOT = 'media/'
