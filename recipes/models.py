@@ -91,7 +91,7 @@ class Recipe(TimestampedModel):
     program = models.ForeignKey(
         Program, on_delete=models.RESTRICT, verbose_name='программа')
     weight = models.PositiveIntegerField('вес в граммах')
-    ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient')
+    # ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient')
     photo = models.ImageField('фотография', blank=True, null=True, storage=photoStorage)
 
     def __str__(self):
@@ -105,7 +105,7 @@ class Recipe(TimestampedModel):
 
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(
-        Recipe, on_delete=models.CASCADE, verbose_name='рецепт')
+        Recipe, on_delete=models.CASCADE, verbose_name='рецепт', related_name='ingredients')
     position = models.PositiveIntegerField('№', editable=False)
     ingredient = models.ForeignKey(
         Ingredient, on_delete=models.RESTRICT, verbose_name='ингредиент')

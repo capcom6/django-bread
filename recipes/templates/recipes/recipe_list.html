@@ -1,0 +1,31 @@
+{% extends 'recipes/base.html' %}
+{% load static %}
+
+{% block header %}
+  <h1>{% block title %}Рецепты{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <div class="ui cards">
+  {% for recipe in object_list %}
+    <a class="ui card" href="">
+      <div class="image">
+        <img src="{% static 'recipes/no-photo.jpg'%}">
+      </div>
+      <div class="ui content">
+        <header class="ui header">
+          {{ recipe.name }}
+        </header>
+        <div class="ui meta">
+          {% for ingredient in recipe.ingredients.all|dictsort:"position"|slice:":5" %}
+          <div class="ui mini label">{{ ingredient.ingredient.name }}</div>
+          {% endfor %}
+        </div>
+        <div class="ui description">
+          {{ recipe.description|truncatewords:25 }}
+        </div>
+      </div>
+    </a>
+  {% endfor %}
+  </div>
+{% endblock %}
