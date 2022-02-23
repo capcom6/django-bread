@@ -1,5 +1,10 @@
+from io import BytesIO
+import os
+from pathlib import Path
 from django.db import models
 from .storage import photoStorage
+from PIL import Image
+from django.core.files import File
 
 # Create your models here.
 
@@ -93,6 +98,26 @@ class Recipe(TimestampedModel):
     weight = models.PositiveIntegerField('вес в граммах')
     # ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient')
     photo = models.ImageField('фотография', blank=True, null=True, storage=photoStorage)
+    thumbnail = models.ImageField('фотография', blank=True, null=True, storage=photoStorage, editable=False)
+
+    def save(self, *args, **kwargs) -> None:
+        
+        if self.photo and (not self.thumbnail or self.thumbnail.name.startswith(self.photo.name)):
+            buffer = BytesIO()
+            # self.photo.save(buffer, 'JPG')
+
+            img = Image.open(self.photo)
+            img.thumbnail((256, 256, ))
+            img.save(buffer, 'JPEG')
+
+            # img = Image.open(self.photo.path)
+            # img.thumbnail((256, 256,))
+            # django.core.files.
+            # self.thumbnail.save(os.path.splitext(self.photo.name)[0] + "_thumb.jpg", File(buffer))
+            # self.thumbnail.set(os.path.splitext(self.photo.name)[0] + "_thumb.jpg", File(buffer))
+            self.thumbnail = File(buffer, os.path.splitext(self.photo.name)[0] + "_thumb.jpg")
+            # print(self.thumbnail)
+        super().save(args, kwargs)
 
     def __str__(self):
         return self.name

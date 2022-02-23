@@ -28,7 +28,8 @@
         "ENV{,/**}",
         "env.bak{,/**}",
         "venv.bak{,/**}",
-        ".vscode{,/**}"
+        ".vscode{,/**}",
+        "media{,/**}",
     ],
     "appService.defaultWebAppToDeploy": "/subscriptions/918d69b1-2dcf-4718-8f61-9e69600cdd67/resourceGroups/Bread/providers/Microsoft.Web/sites/django-bread",
     "appService.deploySubpath": "."
