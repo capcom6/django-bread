@@ -10,7 +10,11 @@
   {% for recipe in object_list %}
     <a class="ui card" href="">
       <div class="image">
-        <img src="{% static 'recipes/no-photo.jpg'%}">
+        {% if recipe.photo %}
+          <img src="{{recipe.photo.url}}">
+        {% else %}
+          <img src="{% static 'recipes/no-photo.jpg'%}">
+        {% endif %}
       </div>
       <div class="ui content">
         <header class="ui header">
