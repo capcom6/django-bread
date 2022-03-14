@@ -8,7 +8,7 @@
 {% block content %}
   <div class="ui cards">
   {% for recipe in object_list %}
-    <a class="ui card" href="">
+    <a class="ui card" href="{% url 'recipe' recipe.id %}">
       <div class="image">
         {% if recipe.thumbnail %}
           <img src="{{recipe.thumbnail.url}}">

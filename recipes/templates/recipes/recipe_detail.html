@@ -1,0 +1,48 @@
+{% extends 'recipes/base.html' %}
+{% load static %}
+
+{% block header %}
+  <h1>{% block title %}{{ object.name }}{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="ui items">
+        <div class="item">
+            <div class="image">
+              <a href="{{recipe.photo.url}}" target="_blank"><img class="ui image" src="{{recipe.thumbnail.url}}"/></a>
+            </div>
+            <div class="content">
+              <a class="header">{{ object.name }}</a>
+              <div class="meta">
+                <span>{{ object.description }}</span>
+              </div>
+              <div class="description">
+                <div class="ui celled list">
+                {% for ingredient in recipe.ingredients.all|dictsort:"position" %}
+                    <div class="item">
+                        <div class="content">
+                        <div class="header">{{ ingredient.ingredient.name }}</div>
+                        {{ ingredient.quantity }} {{ ingredient.measure.short_name }}
+                        {% if ingredient.measure.volume %}
+                        = {{ ingredient.volume }} мл
+                        {% endif %}
+                        {% if ingredient.weight %}
+                        = {{ ingredient.weight }} г
+                        {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+                <p></p>
+              </div>
+              <div class="extra">
+                <div class="ui mini label">{{ object.program.name }}</div>
+                <div class="ui mini label"><i class="ui clock icon"></i>{{ object.program.duration }}</div>
+                <div class="ui mini label"><i class="ui balance scale icon"></i>{{ object.weight }} г</div>
+                <div class="ui mini label"><i class="ui adjust icon"></i>{{ object.get_crust_display }}</div>
+                
+              </div>
+            </div>
+          </div>
+    </div>
+{% endblock %}

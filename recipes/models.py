@@ -138,6 +138,17 @@ class RecipeIngredient(models.Model):
     measure = models.ForeignKey(
         Measure, on_delete=models.RESTRICT, verbose_name='ЕИ')
 
+    def volume(self):
+        return self.quantity * self.measure.volume
+    def weight(self):
+        mw = MeasureWeight.objects.all().filter(
+            ingredient = self.ingredient,
+            measure = self.measure,
+        ).get()
+        if not mw:
+            return None
+        return self.quantity * mw.weight
+
     def save(self, *args, **kwargs):
         self.position = RecipeIngredient.objects.all().filter(
             recipe=self.recipe).count() + 1
