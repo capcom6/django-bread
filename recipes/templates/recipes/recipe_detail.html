@@ -9,7 +9,11 @@
     <div class="ui items">
         <div class="item">
             <div class="image">
-              <a href="{{recipe.photo.url}}" target="_blank"><img class="ui image" src="{{recipe.thumbnail.url}}"/></a>
+                {% if recipe.photo %}
+                <a href="{{recipe.photo.url}}" target="_blank"><img class="ui image" src="{{recipe.thumbnail.url}}"/></a>
+                {% else %}
+                <img class="ui image" src="{% static 'recipes/no-photo.jpg'%}">
+                {% endif %}
             </div>
             <div class="content">
               <a class="header">{{ object.name }}</a>
