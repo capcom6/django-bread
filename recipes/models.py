@@ -1,3 +1,4 @@
+from decimal import Decimal
 from io import BytesIO
 import os
 from pathlib import Path
@@ -147,7 +148,7 @@ class RecipeIngredient(models.Model):
         ).get()
         if not mw:
             return None
-        return self.quantity * mw.weight
+        return self.quantity * Decimal(mw.weight)
 
     def save(self, *args, **kwargs):
         self.position = RecipeIngredient.objects.all().filter(
