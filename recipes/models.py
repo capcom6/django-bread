@@ -51,7 +51,7 @@ class Ingredient(TimestampedModel):
 class MeasureWeight(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     measure = models.ForeignKey(Measure, on_delete=models.CASCADE)
-    weight = models.PositiveIntegerField('вес в граммах')
+    weight = models.FloatField('вес в граммах')
 
     def __str__(self) -> str:
         return f'1 {self.measure.short_name} {self.ingredient.name} = {self.weight} гр.'
