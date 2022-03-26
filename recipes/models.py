@@ -103,21 +103,14 @@ class Recipe(TimestampedModel):
 
     def save(self, *args, **kwargs) -> None:
         
-        if self.photo and (not self.thumbnail or self.thumbnail.name.startswith(self.photo.name)):
+        if self.photo and not (self.thumbnail and self.thumbnail.name.startswith(self.photo.name + "_thumb")):
             buffer = BytesIO()
-            # self.photo.save(buffer, 'JPG')
 
             img = Image.open(self.photo)
             img.thumbnail((256, 256, ))
             img.save(buffer, 'JPEG')
 
-            # img = Image.open(self.photo.path)
-            # img.thumbnail((256, 256,))
-            # django.core.files.
-            # self.thumbnail.save(os.path.splitext(self.photo.name)[0] + "_thumb.jpg", File(buffer))
-            # self.thumbnail.set(os.path.splitext(self.photo.name)[0] + "_thumb.jpg", File(buffer))
             self.thumbnail = File(buffer, os.path.splitext(self.photo.name)[0] + "_thumb.jpg")
-            # print(self.thumbnail)
         super().save(args, kwargs)
 
     def __str__(self):
