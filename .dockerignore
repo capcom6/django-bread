@@ -1,0 +1,12 @@
+.git/
+.vscode/
+env/
+media/
+.deployment
+.dockerignore
+.env
+.env.example
+.gitignore
+db.sqlite3
+docker-compose*.yml
+Dockerfile

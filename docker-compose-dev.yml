@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    ports:
+      - 8000:8000
+    environment:
+      - DEBUG=True
+      - DB_HOST=db
+      - DB_NAME=bread
+      - DB_USER=bread
+      - DB_PASSWORD=bread
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:10.6
+    ports:
+      - 3306:3306
+    environment:
+      - MARIADB_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=bread
+      - MYSQL_USER=bread
+      - MYSQL_PASSWORD=bread
