@@ -59,4 +59,5 @@ USER guest
 EXPOSE 8000
 
 # CMD ["gunicorn", "-R", "-b", "0.0.0.0:8000", "bread.wsgi"]
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+# CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["./bin/migrate_run.sh"]

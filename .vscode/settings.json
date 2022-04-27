@@ -32,5 +32,20 @@
         "media{,/**}",
     ],
     "appService.defaultWebAppToDeploy": "/subscriptions/918d69b1-2dcf-4718-8f61-9e69600cdd67/resourceGroups/Bread/providers/Microsoft.Web/sites/django-bread",
-    "appService.deploySubpath": "."
+    "appService.deploySubpath": ".",
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MariaDB",
+            "name": "localhost-bread",
+            "database": "bread",
+            "username": "root",
+            "password": "root"
+        }
+    ]
 }

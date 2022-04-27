@@ -31,10 +31,10 @@ SECRET_KEY = os.getenv(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", True) == "True"
 
-ALLOWED_HOSTS = [os.getenv("WEBSITE_HOSTNAME", "127.0.0.1")]
+ALLOWED_HOSTS = [os.getenv("WEBSITE_HOSTNAME", "localhost")]
 CSRF_TRUSTED_ORIGINS = [
-    "https://" + os.getenv("WEBSITE_HOSTNAME", "127.0.0.1"),
-    "http://" + os.getenv("WEBSITE_HOSTNAME", "127.0.0.1"),
+    "https://" + os.getenv("WEBSITE_HOSTNAME", "localhost"),
+    "http://" + os.getenv("WEBSITE_HOSTNAME", "localhost"),
 ]
 
 
