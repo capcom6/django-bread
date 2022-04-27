@@ -91,7 +91,9 @@ class Recipe(TimestampedModel):
     ]
 
     name = models.CharField("наименование", max_length=64, unique=True)
-    crust = models.CharField("корочка", max_length=8, choices=CRUST_COLOR_CHOICES)
+    crust = models.CharField(
+        "корочка", max_length=8, choices=CRUST_COLOR_CHOICES, blank=True
+    )
     description = models.TextField("описание")
     program = models.ForeignKey(
         Program, on_delete=models.RESTRICT, verbose_name="программа"

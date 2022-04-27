@@ -46,8 +46,9 @@
         <div class="ui mini label">{{ object.program.name }}</div>
         <div class="ui mini label"><i class="ui clock icon"></i>{{ object.program.duration }}</div>
         <div class="ui mini label"><i class="ui balance scale icon"></i>{{ object.weight }} г</div>
+        {% if object.crust %}
         <div class="ui mini label"><i class="ui adjust icon"></i>{{ object.get_crust_display }}</div>
-
+        {% endif %}
       </div>
     </div>
   </div>
