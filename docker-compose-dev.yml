@@ -11,6 +11,9 @@ services:
       - DB_NAME=bread
       - DB_USER=bread
       - DB_PASSWORD=bread
+      - AZURE_ACCOUNT_NAME
+      - AZURE_ACCOUNT_KEY
+      - AZURE_CONTAINER
     depends_on:
       - db
 
