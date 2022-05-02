@@ -2,7 +2,11 @@ version: '3'
 
 services:
   web:
-    build: .
+    build:
+      context: .
+      target: dev
+    volumes:
+      - .:/app:ro
     ports:
       - 8000:8000
     environment:

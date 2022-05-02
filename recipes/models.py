@@ -1,11 +1,12 @@
+import os
 from decimal import Decimal
 from io import BytesIO
-import os
-from pathlib import Path
-from django.db import models
-from .storage import photoStorage
-from PIL import Image
+
 from django.core.files import File
+from django.db import models
+from PIL import Image
+
+from .storage import photoStorage
 
 # Create your models here.
 
@@ -79,6 +80,18 @@ class Program(TimestampedModel):
         verbose_name_plural = "программы"
 
 
+class Category(TimestampedModel):
+    name = models.CharField("наименование", max_length=64)
+
+    def __str__(self) -> str:
+        return self.name
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "категория"
+        verbose_name_plural = "категории"
+
+
 class Recipe(TimestampedModel):
     CRUST_LIGHT = "light"
     CRUST_MEDIUM = "medium"
@@ -90,6 +103,14 @@ class Recipe(TimestampedModel):
         (CRUST_DARK, "Темная"),
     ]
 
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.RESTRICT,
+        verbose_name="категория",
+        related_name="recipes",
+        blank=False,
+        null=True,
+    )
     name = models.CharField("наименование", max_length=64, unique=True)
     crust = models.CharField(
         "корочка", max_length=8, choices=CRUST_COLOR_CHOICES, blank=True

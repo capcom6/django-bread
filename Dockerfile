@@ -61,3 +61,25 @@ EXPOSE 8000
 # CMD ["gunicorn", "-R", "-b", "0.0.0.0:8000", "bread.wsgi"]
 # CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
 CMD ["./bin/migrate_run.sh"]
+
+FROM base AS dev
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+RUN apk update && apk add --no-cache \
+    mariadb-connector-c-dev \
+    libjpeg-turbo-dev
+
+COPY --from=build /usr/local/lib/python3.9/site-packages/ /usr/local/lib/python3.9/site-packages/
+
+USER guest
+
+VOLUME [ "/app" ]
+EXPOSE 8000
+
+# CMD ["gunicorn", "-R", "-b", "0.0.0.0:8000", "bread.wsgi"]
+# CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["./bin/migrate_run.sh"]

@@ -4,12 +4,11 @@ run:
 
 .PHONY: migration
 migration:
-	python3 manage.py makemigrations && \
-	python3 manage.py migrate
+	python3 manage.py makemigrations
 
 .PHONY: docker-up
 docker-up:
-	docker-compose -f docker-compose-dev.yml up
+	docker-compose -f docker-compose-dev.yml up --build
 
 .PHONY: docker-up-silent
 docker-up-silent:

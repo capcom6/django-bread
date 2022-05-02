@@ -2,34 +2,41 @@
 {% load static %}
 
 {% block header %}
-  <h1>{% block title %}Рецепты{% endblock %}</h1>
+<h1>{% block title %}Рецепты{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-  <div class="ui cards">
+<div class="ui cards">
   {% for recipe in object_list %}
-    <a class="ui card" href="{% url 'recipe' recipe.id %}">
-      <div class="image">
-        {% if recipe.thumbnail %}
-          <img src="{{recipe.thumbnail.url}}">
-        {% else %}
-          <img src="{% static 'recipes/no-photo.jpg'%}">
+  <a class="ui card" href="{% url 'recipe' recipe.id %}">
+    <div class="image">
+      {% if recipe.thumbnail %}
+      <img src="{{recipe.thumbnail.url}}">
+      {% else %}
+      <img src="{% static 'recipes/no-photo.jpg'%}">
+      {% endif %}
+    </div>
+    <div class="ui content">
+      <header class="ui header">
+        {{ recipe.name }}
+      </header>
+      <div class="ui meta">
+        {% for ingredient in recipe.ingredients.all|dictsort:"position"|slice:":5" %}
+        <div class="ui mini label">{{ ingredient.ingredient.name }}</div>
+        {% endfor %}
+      </div>
+      <div class="ui description">
+        {{ recipe.description|truncatewords:25 }}
+      </div>
+      <div class="ui meta">
+        {% if recipe.category %}
+        <div class="ui mini label">
+          {{ recipe.category.name}}
+        </div>
         {% endif %}
       </div>
-      <div class="ui content">
-        <header class="ui header">
-          {{ recipe.name }}
-        </header>
-        <div class="ui meta">
-          {% for ingredient in recipe.ingredients.all|dictsort:"position"|slice:":5" %}
-          <div class="ui mini label">{{ ingredient.ingredient.name }}</div>
-          {% endfor %}
-        </div>
-        <div class="ui description">
-          {{ recipe.description|truncatewords:25 }}
-        </div>
-      </div>
-    </a>
+    </div>
+  </a>
   {% endfor %}
-  </div>
+</div>
 {% endblock %}
