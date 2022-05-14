@@ -17,3 +17,14 @@ class RecipesListView(ListView):
 
 class RecipeDetailsView(DetailView):
     model = models.Recipe
+
+    def get_object(self):
+        pk = self.kwargs.get(self.pk_url_kwarg)
+        return (
+            models.Recipe.objects.filter(pk=pk)
+            .select_related("category", "program")
+            .prefetch_related(
+                "ingredients__ingredient",
+                "ingredients__measure",
+            )
+        ).get()
