@@ -12,7 +12,7 @@ class RecipesListView(ListView):
         if category_id:
             query = query.filter(category__id=category_id)
 
-        return query.all()
+        return query.prefetch_related("category", "ingredients__ingredient").all()
 
 
 class RecipeDetailsView(DetailView):
