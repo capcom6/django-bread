@@ -15,12 +15,17 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.decorators.cache import cache_page
 
 from . import views
 
 urlpatterns = [
-    path("", views.RecipesListView.as_view(), name="recipes"),
-    path("recipe/<int:pk>/", views.RecipeDetailsView.as_view(), name="recipe"),
+    path("", cache_page(60)(views.RecipesListView.as_view()), name="recipes"),
+    path(
+        "recipe/<int:pk>/",
+        cache_page(3600)(views.RecipeDetailsView.as_view()),
+        name="recipe",
+    ),
 ]
 
 if settings.DEBUG:
