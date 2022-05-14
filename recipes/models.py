@@ -171,6 +171,7 @@ class RecipeIngredient(models.Model):
     )
     quantity = models.DecimalField("кол-во", max_digits=10, decimal_places=3)
     measure = models.ForeignKey(Measure, on_delete=models.RESTRICT, verbose_name="ЕИ")
+    comment = models.CharField("комментарий", max_length=64, blank=True)
 
     def volume(self):
         return self.quantity * self.measure.volume
