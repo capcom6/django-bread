@@ -25,6 +25,7 @@ class RecipeDetailsView(DetailView):
             .select_related("category", "program")
             .prefetch_related(
                 "ingredients__ingredient",
+                "ingredients__ingredient__measureweight_set__measure",
                 "ingredients__measure",
             )
         ).get()

@@ -147,7 +147,7 @@ class Recipe(TimestampedModel):
             self.thumbnail = File(
                 buffer, os.path.splitext(self.photo.name)[0] + "_thumb.jpg"
             )
-        super().save(args, kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -177,17 +177,10 @@ class RecipeIngredient(models.Model):
         return self.quantity * self.measure.volume
 
     def weight(self):
-        mw = (
-            MeasureWeight.objects.all()
-            .filter(
-                ingredient=self.ingredient,
-                measure=self.measure,
-            )
-            .get()
-        )
-        if not mw:
-            return None
-        return self.quantity * Decimal(mw.weight)
+        for mw in self.ingredient.measureweight_set.all():
+            if mw.measure == self.measure and mw.ingredient == self.ingredient:
+                return self.quantity * Decimal(mw.weight)
+        return None
 
     def save(self, *args, **kwargs):
         self.position = (
