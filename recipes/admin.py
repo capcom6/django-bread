@@ -10,11 +10,6 @@ from .models import *
 class RecipeIngredientAdminInline(admin.TabularInline):
     model = RecipeIngredient
 
-    def __init__(self, parent_model, admin_site) -> None:
-        super().__init__(parent_model, admin_site)
-        self.all_ingredients = Ingredient.objects.all()
-        self.all_measures = Measure.objects.all()
-
     def get_queryset(self, request):
         return super().get_queryset(request).select_related("ingredient", "measure")
 
