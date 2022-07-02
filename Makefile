@@ -1,23 +1,25 @@
-.PHONY: start
+init:
+	pip install -r requirements.txt
+
+init-dev: init
+	pip install -r requirements-dev.txt
+
 start:
 	python3 manage.py runserver
 
-.PHONY: migration
 migration:
 	python3 manage.py makemigrations
 
-.PHONY: docker-up
-docker-up:
-	docker-compose -f docker-compose-dev.yml up --build
+up-dev:
+	docker-compose -f deployments/docker-compose-dev.yml up --build
 
-.PHONY: docker-up-silent
-docker-up-silent:
-	docker-compose -f docker-compose-dev.yml up -d
+up-dev-silent:
+	docker-compose -f deployments/docker-compose-dev.yml up -d
 
-.PHONY: docker-exec
-docker-exec:
-	docker-compose -f docker-compose-dev.yml exec web sh
+exec-dev:
+	docker-compose -f deployments/docker-compose-dev.yml exec web sh
 
-.PHONY: docker-down
-docker-down:
-	docker-compose -f docker-compose-dev.yml down
+down-dev:
+	docker-compose -f deployments/docker-compose-dev.yml down
+
+.PHONY: init init-dev start migration up-dev up-dev-silent exec-dev down-dev
