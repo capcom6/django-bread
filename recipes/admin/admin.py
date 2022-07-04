@@ -4,7 +4,18 @@ from django.forms import ModelChoiceField
 from django.http import HttpRequest
 from django.db.models import ForeignKey
 
-from .models import *
+from ..models import *
+
+
+class RecipeCommentInline(admin.TabularInline):
+    model = Comment
+    extra = 0
+    fields = ("text",)
+    readonly_fields = ("text",)
+    can_delete = True
+    verbose_name = "комментарий"
+    verbose_name_plural = "комментарии"
+    ordering = ("-created_at",)
 
 
 class RecipeIngredientAdminInline(admin.TabularInline):
@@ -17,7 +28,7 @@ class RecipeIngredientAdminInline(admin.TabularInline):
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     list_filter = ("category",)
-    inlines = (RecipeIngredientAdminInline,)
+    inlines = (RecipeIngredientAdminInline, RecipeCommentInline)
 
 
 class MeasureWeightAdminInline(admin.TabularInline):
@@ -27,6 +38,17 @@ class MeasureWeightAdminInline(admin.TabularInline):
 @admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
     inlines = (MeasureWeightAdminInline,)
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ("recipe", "text", "created_at")
+    list_filter = ("recipe",)
+    search_fields = ("text",)
+    ordering = ("-created_at",)
+
+    def get_queryset(self, request: HttpRequest) -> Any:
+        return super().get_queryset(request).select_related("recipe")
 
 
 # Register your models here.

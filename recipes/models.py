@@ -12,11 +12,45 @@ from .storage import photoStorage
 
 
 class TimestampedModel(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True, editable=False)
-    updated_at = models.DateTimeField(auto_now=True, editable=False)
+    created_at = models.DateTimeField("создан", auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField("обновлен", auto_now=True, editable=False)
 
     class Meta:
         abstract = True
+
+
+class Comment(TimestampedModel):
+    STATE_NEW = "new"
+    STATE_ACCEPTED = "accepted"
+    STATE_REJECTED = "rejected"
+
+    STATE_CHOICES = [
+        (STATE_NEW, "новый"),
+        (STATE_ACCEPTED, "принят"),
+        (STATE_REJECTED, "отклонен"),
+    ]
+
+    state = models.CharField(
+        "состояние", max_length=8, choices=STATE_CHOICES, blank=False, default=STATE_NEW
+    )
+    text = models.TextField("текст", blank=False)
+    # author = models.ForeignKey(
+    #     "auth.User", on_delete=models.CASCADE, related_name="comments"
+    # )
+    recipe = models.ForeignKey(
+        "Recipe",
+        on_delete=models.CASCADE,
+        related_name="comments",
+        verbose_name="рецепт",
+    )
+
+    def __str__(self):
+        return self.text
+
+    class Meta:
+        verbose_name = "комментарий"
+        verbose_name_plural = "комментарии"
+        ordering = ("-created_at",)
 
 
 class Measure(TimestampedModel):

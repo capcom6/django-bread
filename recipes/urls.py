@@ -19,12 +19,18 @@ from django.views.decorators.cache import cache_page
 
 from . import views
 
+app_name = "recipes"
 urlpatterns = [
-    path("", cache_page(60)(views.RecipesListView.as_view()), name="recipes"),
+    path("", cache_page(60)(views.RecipesListView.as_view()), name="list"),
     path(
         "recipe/<int:pk>/",
         cache_page(3600)(views.RecipeDetailsView.as_view()),
-        name="recipe",
+        name="details",
+    ),
+    path(
+        "recipe/<int:recipe_id>/comment",
+        views.CommentAddView.as_view(),
+        name="comment_add",
     ),
 ]
 
