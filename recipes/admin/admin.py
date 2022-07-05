@@ -5,6 +5,7 @@ from django.http import HttpRequest
 from django.db.models import ForeignKey
 
 from ..models import *
+from .actions import comment_accept, comment_reject
 
 
 class RecipeCommentInline(admin.TabularInline):
@@ -42,10 +43,11 @@ class IngredientAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ("recipe", "text", "created_at")
-    list_filter = ("recipe",)
+    list_display = ("state", "recipe", "text", "created_at")
+    list_filter = ("state",)
     search_fields = ("text",)
     ordering = ("-created_at",)
+    actions = (comment_accept, comment_reject)
 
     def get_queryset(self, request: HttpRequest) -> Any:
         return super().get_queryset(request).select_related("recipe")
