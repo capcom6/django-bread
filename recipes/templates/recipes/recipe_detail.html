@@ -72,7 +72,19 @@
       </div>
       <div class="meta">
         <h3 class="ui dividing header">Комментарии</h3>
-        <form method="post" action={% url 'recipes:comment_add' recipe_id=object.pk %} class="ui form">
+        {% if messages %}
+            {% for message in messages %}
+              {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+              <div class="ui success message">
+                <div class="header">
+                  Успех
+                </div>
+                <p>{{ message }}</p>
+              </div>
+              {% endif %}
+            {% endfor %}
+        {% else %}
+          <form method="post" action={% url 'recipes:comment_add' recipe_id=object.pk %} class="ui form">
             {% csrf_token %}
             {{ form.non_field_errors }}
             <div class="field">
@@ -81,6 +93,8 @@
             {{ form.text.errors }}
             <input class="ui fluid accept button" type="submit" value="Отправить">
         </form>
+        {% endif %}
+
         <div class="ui feed">
           {% for comment in comments.all %}
           <div class="event">
