@@ -32,25 +32,27 @@ RUN apk update && apk add --no-cache \
     mariadb-connector-c-dev \
     jpeg-dev
 
+RUN pip install --no-cache-dir gunicorn
+
 WORKDIR /app
 
 COPY requirements.txt ./
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 #################################
 FROM base AS prod
 
-ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+
+ARG WORKERS=4
 
 WORKDIR /app
 
-RUN apk update && apk add --no-cache \
-    mariadb-connector-c-dev \
-    libjpeg-turbo-dev
+# RUN apk update && apk add --no-cache \
+#     mariadb-connector-c-dev \
+#     libjpeg-turbo-dev
 
-RUN pip install gunicorn
-
+COPY --from=build /usr/local/bin/ /usr/local/bin/
 COPY --from=build /usr/local/lib/python3.9/site-packages/ /usr/local/lib/python3.9/site-packages/
 COPY . .
 
@@ -58,28 +60,16 @@ USER guest
 
 EXPOSE 8000
 
-# CMD ["gunicorn", "-R", "-b", "0.0.0.0:8000", "bread.wsgi"]
-# CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
-CMD ["./bin/migrate_run.sh"]
+ENTRYPOINT ["gunicorn", "--bind", ":8000", "--workers", ${WORKERS}, "bread.wsgi"]
 
-FROM base AS dev
+###############################################################################
+FROM python:3.9 AS dev
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-RUN apk update && apk add --no-cache \
-    mariadb-connector-c-dev \
-    libjpeg-turbo-dev
-
-COPY --from=build /usr/local/lib/python3.9/site-packages/ /usr/local/lib/python3.9/site-packages/
-
-USER guest
-
-VOLUME [ "/app" ]
 EXPOSE 8000
 
-# CMD ["gunicorn", "-R", "-b", "0.0.0.0:8000", "bread.wsgi"]
-# CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
-CMD ["./bin/migrate_run.sh"]
+ENTRYPOINT ["/app/scripts/dev-entrypoint.sh"]

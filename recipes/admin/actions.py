@@ -11,3 +11,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+# https://docs.djangoproject.com/en/4.0/ref/contrib/admin/actions/
+
+from django.contrib import admin
+
+from ..models import Comment
+
+
+@admin.action(description="Опубликовать комментарии")
+def comment_accept(modeladmin, request, queryset):
+    queryset.update(state=Comment.STATE_ACCEPTED)
+
+
+@admin.action(description="Отклонить комментарии")
+def comment_reject(modeladmin, request, queryset):
+    queryset.update(state=Comment.STATE_REJECTED)

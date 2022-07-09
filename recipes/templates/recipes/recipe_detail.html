@@ -2,7 +2,9 @@
 {% load static %}
 
 {% block header %}
-<h1>{% block title %}{{ object.name }}{% endblock %}</h1>
+<h1>
+  <a href="{% url 'recipes:list' %}"><i class="ui arrow left icon"></i></a> {% block title %}{{ object.name }}{% endblock %}
+</h1>
 {% endblock %}
 
 {% block content %}
@@ -17,34 +19,6 @@
     </div>
     <div class="content">
       <a class="header">{{ object.name }}</a>
-      <div class="meta">
-        <p>{{ object.description }}</p>
-        <p>{{ object.steps|linebreaks }}</p>
-      </div>
-      <div class="description">
-        <div class="ui celled list">
-          {% for ingredient in recipe.ingredients.all|dictsort:"position" %}
-          <div class="item">
-            <div class="content">
-              <div class="header">{{ ingredient.ingredient.name }}</div>
-              {{ ingredient.quantity }} {{ ingredient.measure.short_name }}
-              {% if ingredient.measure.volume %}
-              = {{ ingredient.volume }} мл
-              {% endif %}
-              {% if ingredient.weight %}
-              = {{ ingredient.weight }} г
-              {% endif %}
-              {% if ingredient.comment %}
-              ({{ ingredient.comment }})
-              {% endif %}
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-      </div>
-      <div class="meta">
-        <p>{{ object.after }}</p>
-      </div>
       <div class="extra">
         <div class="ui mini label">{{ object.program.name }}</div>
         <div class="ui mini label"><i class="ui clock icon"></i>{{ object.program.duration }}</div>
@@ -52,6 +26,92 @@
         {% if object.crust %}
         <div class="ui mini label"><i class="ui adjust icon"></i>{{ object.get_crust_display }}</div>
         {% endif %}
+      </div>
+      <div class="meta">
+        <p>{{ object.description }}</p>
+        <p>{{ object.steps|linebreaks }}</p>
+      </div>
+      <div class="description">
+        <table class="ui very basic celled table">
+          <thead>
+            <tr>
+              <th>Ингредиент</th>
+              <th>Кол-во</th>
+              <th>Объем</th>
+              <th>Вес</th>
+              <th>Комментарий</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ingredient in recipe.ingredients.all|dictsort:"position" %}
+            <tr>
+              <td>{{ ingredient.ingredient.name }}</td>
+              <td class="ui right aligned">{{ ingredient.quantity }} {{ ingredient.measure.short_name }}</td>
+              <td class="ui right aligned">
+                {% if ingredient.measure.volume %}
+                  {{ ingredient.volume }} мл
+                {% endif %}
+              </td>
+              <td class="ui right aligned">
+                {% if ingredient.weight %}
+                  {{ ingredient.weight }} г
+                {% endif %}
+              </td>
+              <td class="ui right aligned">
+                {% if ingredient.weight %}
+                  {{ ingredient.comment }}
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="meta">
+        <p>{{ object.after }}</p>
+      </div>
+      <div class="meta">
+        <h3 class="ui dividing header">Комментарии</h3>
+        {% if messages %}
+            {% for message in messages %}
+              {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+              <div class="ui success message">
+                <div class="header">
+                  Успех
+                </div>
+                <p>{{ message }}</p>
+              </div>
+              {% endif %}
+            {% endfor %}
+        {% else %}
+          <form method="post" action={% url 'recipes:comment_add' recipe_id=object.pk %} class="ui form">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="field">
+              {{ comment_form.text }}
+            </div>
+            {{ form.text.errors }}
+            <input class="ui fluid accept button" type="submit" value="Отправить">
+        </form>
+        {% endif %}
+
+        <div class="ui feed">
+          {% for comment in comments.all %}
+          <div class="event">
+            <div class="content">
+              <div class="summary">
+                <a class="user">Аноним</a> написал
+                <div class="date">
+                  {{ comment.created_at|date:"d.m.Y H:i" }}
+                </div>
+              </div>
+              <div class="extra text">
+                {{ comment.text }}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </div>

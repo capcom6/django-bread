@@ -3,14 +3,23 @@ version: '3'
 services:
   web:
     build:
-      context: .
+      context: ..
+      dockerfile: package/Dockerfile
       target: dev
     volumes:
-      - .:/app:ro
+      - ../bread:/app/bread:ro
+      - ../recipes:/app/recipes:ro
+      - ../scripts:/app/scripts:ro
+      - ../manage.py:/app/manage.py:ro
+      - ../requirements.txt:/app/requirements.txt:ro
+      - ../requirements-dev.txt:/app/requirements-dev.txt:ro
+      - ../Makefile:/app/Makefile:ro
+      - ../.cache/web-pip:/root/.cache/pip:rw
     ports:
       - 8000:8000
     environment:
       - DEBUG=True
+      - CACHE_DISABLE=True
       - DB_HOST=db
       - DB_NAME=bread
       - DB_USER=bread
@@ -24,7 +33,7 @@ services:
   db:
     image: mariadb:10.6
     ports:
-      - 3306:3306
+      - 33306:3306
     environment:
       - MARIADB_ROOT_PASSWORD=root
       - MYSQL_DATABASE=bread
