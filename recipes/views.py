@@ -21,6 +21,7 @@ from django.http import (
     HttpResponseBadRequest,
     HttpResponseNotFound,
 )
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView
@@ -58,7 +59,8 @@ class RecipeDetailsView(DetailView):
 
     def get_object(self):
         pk = self.kwargs.get(self.pk_url_kwarg)
-        return (
+
+        return get_object_or_404(
             models.Recipe.objects.filter(pk=pk)
             .select_related("category", "program")
             .prefetch_related(
@@ -66,7 +68,7 @@ class RecipeDetailsView(DetailView):
                 "ingredients__ingredient__measureweight_set__measure",
                 "ingredients__measure",
             )
-        ).get()
+        )
 
 
 class CommentAddView(SuccessMessageMixin, CreateView):

@@ -1,0 +1,35 @@
+[
+    {
+        "model": "recipes.comment",
+        "pk": 1,
+        "fields": {
+            "created_at": "2022-07-10T05:52:14.665Z",
+            "updated_at": "2022-07-10T05:52:14.665Z",
+            "state": "accepted",
+            "text": "Опубликованный комментарий",
+            "recipe": 1
+        }
+    },
+    {
+        "model": "recipes.comment",
+        "pk": 2,
+        "fields": {
+            "created_at": "2022-07-10T05:52:14.665Z",
+            "updated_at": "2022-07-10T05:52:14.665Z",
+            "state": "rejected",
+            "text": "Отклоненный комментарий",
+            "recipe": 1
+        }
+    },
+    {
+        "model": "recipes.comment",
+        "pk": 3,
+        "fields": {
+            "created_at": "2022-07-10T05:52:14.665Z",
+            "updated_at": "2022-07-10T05:52:14.665Z",
+            "state": "new",
+            "text": "Новый комментарий",
+            "recipe": 1
+        }
+    }
+]

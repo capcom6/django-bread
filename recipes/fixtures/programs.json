@@ -1,0 +1,82 @@
+[
+    {
+        "model": "recipes.program",
+        "pk": 1,
+        "fields": {
+            "created_at": "2022-02-18T15:07:21.283Z",
+            "updated_at": "2022-02-18T15:07:21.283Z",
+            "name": "Базовая",
+            "duration": "03:00:00"
+        }
+    },
+    {
+        "model": "recipes.program",
+        "pk": 2,
+        "fields": {
+            "created_at": "2022-03-12T10:44:46.282Z",
+            "updated_at": "2022-03-12T10:44:46.282Z",
+            "name": "Французский хлеб",
+            "duration": "04:00:00"
+        }
+    },
+    {
+        "model": "recipes.program",
+        "pk": 3,
+        "fields": {
+            "created_at": "2022-03-19T01:30:57.929Z",
+            "updated_at": "2022-03-19T01:30:57.929Z",
+            "name": "Быстрая выпечка",
+            "duration": "02:00:00"
+        }
+    },
+    {
+        "model": "recipes.program",
+        "pk": 5,
+        "fields": {
+            "created_at": "2022-03-23T11:49:34.592Z",
+            "updated_at": "2022-03-23T11:49:34.592Z",
+            "name": "Хлеб с добавками",
+            "duration": "03:00:00"
+        }
+    },
+    {
+        "model": "recipes.program",
+        "pk": 6,
+        "fields": {
+            "created_at": "2022-04-02T08:49:53.375Z",
+            "updated_at": "2022-04-02T08:49:53.375Z",
+            "name": "Хлеб для сэндвичей",
+            "duration": "03:00:00"
+        }
+    },
+    {
+        "model": "recipes.program",
+        "pk": 7,
+        "fields": {
+            "created_at": "2022-04-03T01:51:56.411Z",
+            "updated_at": "2022-04-03T01:51:56.411Z",
+            "name": "Замес",
+            "duration": "00:15:00"
+        }
+    },
+    {
+        "model": "recipes.program",
+        "pk": 8,
+        "fields": {
+            "created_at": "2022-05-05T05:31:17.187Z",
+            "updated_at": "2022-05-05T05:31:17.187Z",
+            "name": "Цельнозерновой",
+            "duration": "04:00:00"
+        }
+    },
+    {
+        "model": "recipes.program",
+        "pk": 9,
+        "fields": {
+            "created_at": "2022-07-01T16:55:19.359Z",
+            "updated_at": "2022-07-01T16:55:19.359Z",
+            "name": "Безглютеновый",
+            "duration": "02:45:00"
+        }
+    }
+]
