@@ -22,4 +22,11 @@ exec-dev:
 down-dev:
 	docker-compose -f deployments/docker-compose-dev.yml down
 
-.PHONY: init init-dev start migration up-dev up-dev-silent exec-dev down-dev
+test:
+	python3 manage.py test
+
+test-cov:
+	coverage run --source='.' manage.py test recipes \
+		&& coverage report
+
+.PHONY: init init-dev start migration up-dev up-dev-silent exec-dev down-dev test

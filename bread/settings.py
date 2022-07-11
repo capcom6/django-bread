@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+import sys
 import dotenv
 
 dotenv.load_dotenv()
@@ -30,6 +31,7 @@ SECRET_KEY = os.getenv(
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", True) == "True"
+TESTING = len(sys.argv) > 1 and sys.argv[1] == "test"
 
 ALLOWED_HOSTS = [os.getenv("WEBSITE_HOSTNAME", "localhost")]
 CSRF_TRUSTED_ORIGINS = [
@@ -94,19 +96,27 @@ WSGI_APPLICATION = "bread.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": os.getenv("DB_NAME"),
-        "USER": os.getenv("DB_USER"),
-        "PASSWORD": os.getenv("DB_PASSWORD"),
-        "HOST": os.getenv("DB_HOST", "127.0.0.1"),
-        "PORT": os.getenv("DB_PORT", 3306),
-        "OPTIONS": {"ssl": {}},
+if TESTING:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": os.getenv("DB_NAME"),
+            "USER": os.getenv("DB_USER"),
+            "PASSWORD": os.getenv("DB_PASSWORD"),
+            "HOST": os.getenv("DB_HOST", "127.0.0.1"),
+            "PORT": os.getenv("DB_PORT", 3306),
+            "OPTIONS": {"ssl": {}},
+        }
+    }
 
-if os.getenv("CACHE_DISABLE", False) == "True":
+if os.getenv("CACHE_DISABLE", False) == "True" or TESTING:
     CACHES = {
         "default": {
             "BACKEND": "django.core.cache.backends.dummy.DummyCache",
