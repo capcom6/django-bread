@@ -13,8 +13,11 @@
 # limitations under the License.
 
 import os
+
 from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from storages.backends.azure_storage import AzureStorage
+
 
 # Create your models here.
 class PhotoStorage(AzureStorage):
@@ -24,4 +27,7 @@ class PhotoStorage(AzureStorage):
     expiration_secs = None
 
 
-photoStorage = PhotoStorage()
+if settings.TESTING:
+    photoStorage = FileSystemStorage(location=settings.MEDIA_ROOT)
+else:
+    photoStorage = PhotoStorage()
