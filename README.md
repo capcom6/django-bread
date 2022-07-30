@@ -1,5 +1,7 @@
 # Книга рецептов для хлебопечек
 
+[![codecov](https://codecov.io/gh/capcom6/django-bread/branch/master/graph/badge.svg?token=AIZLFLWB95)](https://codecov.io/gh/capcom6/django-bread)
+
 Простая книга рецептов хлеба для использования с хлебопечкой.
 
 ## Требования
