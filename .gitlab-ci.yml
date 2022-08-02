@@ -10,7 +10,7 @@ variables:
   DB_HOST: mysql
 
 default:
-  image: ubuntu:20.04
+  image: python:3.9
   #
   # Pick zero or more services to be used on all builds.
   # Only needed when using a docker container to run your tests in.
@@ -24,10 +24,6 @@ default:
     paths:
       - ~/.cache/pip/
   before_script:
-    - apt -y update
-    - apt -y install apt-utils
-    - apt -y install net-tools python3.9 python3-pip mysql-client libmysqlclient-dev
-    - apt -y upgrade
     - pip install -r requirements.txt
     - pip install -r requirements-dev.txt
 
@@ -41,5 +37,4 @@ migrations:
 django-tests:
   stage: test
   script:
-    - echo "GRANT ALL on *.* to '${MYSQL_USER}';"| mysql -u root --password="${MYSQL_ROOT_PASSWORD}" -h mysql
     - python3 manage.py test
