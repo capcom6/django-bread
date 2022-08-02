@@ -10,7 +10,7 @@ variables:
   DB_HOST: mysql
 
 default:
-  image: python:3.9
+  image: ubuntu:20.04
   #
   # Pick zero or more services to be used on all builds.
   # Only needed when using a docker container to run your tests in.
@@ -24,6 +24,10 @@ default:
     paths:
       - ~/.cache/pip/
   before_script:
+    - apt -y update
+    - apt -y install apt-utils
+    - apt -y install net-tools python3.9 python3-pip mysql-client libmysqlclient-dev
+    - apt -y upgrade
     - pip install -r requirements.txt
     - pip install -r requirements-dev.txt
 
