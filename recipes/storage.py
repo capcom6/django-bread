@@ -28,9 +28,12 @@ class PhotoStorageAzure(AzureStorage):
     azure_container = os.getenv("AZURE_CONTAINER")
     expiration_secs = None
 
+
 class PhotoStorageS3(S3Boto3Storage):
-    AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
-    AWS_S3_ENDPOINT_URL = os.getenv('AWS_S3_ENDPOINT_URL')
+    region_name = os.getenv("AWS_S3_REGION_NAME")
+    endpoint_url = os.getenv("AWS_S3_ENDPOINT_URL")
+    bucket_name = os.getenv("AWS_STORAGE_BUCKET_NAME")
+    location = "photo"
 
 
 if settings.TESTING:
