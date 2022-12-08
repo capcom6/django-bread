@@ -42,6 +42,7 @@ jobs:
         with:
           file: package/Dockerfile
           platforms: linux/amd64
+          target: prod
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
