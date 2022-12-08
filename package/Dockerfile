@@ -52,13 +52,20 @@ RUN apk update && apk add --no-cache \
 
 COPY --from=build /usr/local/bin/ /usr/local/bin/
 COPY --from=build /usr/local/lib/python3.9/site-packages/ /usr/local/lib/python3.9/site-packages/
-COPY . .
 
-# USER guest
+COPY ./scripts/docker-entrypoint.sh /docker-entrypoint.sh
+
+COPY ./manage.py ./manage.py
+COPY ./bread ./bread
+COPY ./recipes ./recipes
+
+RUN python manage.py collectstatic
+
+USER guest
 
 EXPOSE 8000
 
-ENTRYPOINT ["/app/scripts/entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 ###############################################################################
 FROM python:3.9 AS dev

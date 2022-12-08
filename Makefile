@@ -8,7 +8,7 @@ start:
 	python manage.py runserver
 
 migration:
-	python manage.py makemigrations \
+	python manage.py migrate \
 		&& python manage.py createcachetable
 
 up-dev:
@@ -30,4 +30,4 @@ test-cov:
 	coverage run --source='.' manage.py test recipes \
 		&& coverage report
 
-.PHONY: init init-dev start migration up-dev up-dev-silent exec-dev down-dev test
+.PHONY: init init-dev start migration up-dev up-dev-silent exec-dev down-dev test test-cov
