@@ -217,7 +217,7 @@ class RecipeIngredient(models.Model):
         return None
 
     def save(self, *args, **kwargs):
-        self.position = (
+        self.position = self.position or (
             RecipeIngredient.objects.all().filter(recipe=self.recipe).count() + 1
         )
         super().save(*args, **kwargs)
