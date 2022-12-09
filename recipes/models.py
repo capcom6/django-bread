@@ -199,7 +199,7 @@ class RecipeIngredient(models.Model):
         verbose_name="рецепт",
         related_name="ingredients",
     )
-    position = models.PositiveIntegerField("№", editable=False)
+    position = models.PositiveIntegerField("№")
     ingredient = models.ForeignKey(
         Ingredient, on_delete=models.RESTRICT, verbose_name="ингредиент"
     )
