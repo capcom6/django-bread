@@ -10,9 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-from pathlib import Path
 import os
 import sys
+from pathlib import Path
+
 import dotenv
 
 dotenv.load_dotenv()
@@ -33,10 +34,10 @@ SECRET_KEY = os.getenv(
 DEBUG = os.getenv("DEBUG", True) == "True"
 TESTING = len(sys.argv) > 1 and sys.argv[1] == "test"
 
-ALLOWED_HOSTS = [os.getenv("WEBSITE_HOSTNAME", "localhost")]
+ALLOWED_HOSTS = [os.getenv("WEBSITE_HOSTNAME", "127.0.0.1")]
 CSRF_TRUSTED_ORIGINS = [
-    "https://" + os.getenv("WEBSITE_HOSTNAME", "localhost"),
-    "http://" + os.getenv("WEBSITE_HOSTNAME", "localhost"),
+    "https://" + os.getenv("WEBSITE_HOSTNAME", "127.0.0.1"),
+    "http://" + os.getenv("WEBSITE_HOSTNAME", "127.0.0.1"),
 ]
 
 INTERNAL_IPS = [
@@ -112,7 +113,10 @@ else:
             "PASSWORD": os.getenv("DB_PASSWORD"),
             "HOST": os.getenv("DB_HOST", "127.0.0.1"),
             "PORT": os.getenv("DB_PORT", 3306),
-            "OPTIONS": {"ssl": {}},
+            "OPTIONS": {
+                "ssl": {},
+                "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+            },
         }
     }
 

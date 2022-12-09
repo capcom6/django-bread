@@ -5,10 +5,11 @@ init-dev: init
 	pip install -r requirements-dev.txt
 
 start:
-	python3 manage.py runserver
+	python manage.py runserver
 
 migration:
-	python3 manage.py makemigrations
+	python manage.py migrate \
+		&& python manage.py createcachetable
 
 up-dev:
 	docker-compose -f deployments/docker-compose-dev.yml up --build
@@ -23,10 +24,10 @@ down-dev:
 	docker-compose -f deployments/docker-compose-dev.yml down
 
 test:
-	python3 manage.py test
+	python manage.py test
 
 test-cov:
 	coverage run --source='.' manage.py test recipes \
 		&& coverage report
 
-.PHONY: init init-dev start migration up-dev up-dev-silent exec-dev down-dev test
+.PHONY: init init-dev start migration up-dev up-dev-silent exec-dev down-dev test test-cov

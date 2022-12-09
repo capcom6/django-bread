@@ -19,11 +19,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='recipe',
             name='photo',
-            field=models.ImageField(blank=True, null=True, storage=recipes.storage.PhotoStorage(), upload_to='', verbose_name='фотография'),
+            field=models.ImageField(blank=True, null=True, storage=recipes.storage.PhotoStorageAzure(), upload_to='', verbose_name='фотография'),
         ),
         migrations.AlterField(
             model_name='recipe',
             name='thumbnail',
-            field=models.ImageField(blank=True, editable=False, null=True, storage=recipes.storage.PhotoStorage(), upload_to='', verbose_name='фотография'),
+            field=models.ImageField(blank=True, editable=False, null=True, storage=recipes.storage.PhotoStorageAzure(), upload_to='', verbose_name='фотография'),
         ),
     ]
