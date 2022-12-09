@@ -44,23 +44,28 @@ FROM base AS prod
 
 ENV PYTHONUNBUFFERED=1
 
-ARG WORKERS=4
-
 WORKDIR /app
 
-# RUN apk update && apk add --no-cache \
-#     mariadb-connector-c-dev \
-#     libjpeg-turbo-dev
+RUN apk update && apk add --no-cache \
+    mariadb-connector-c-dev \
+    libjpeg-turbo-dev
 
 COPY --from=build /usr/local/bin/ /usr/local/bin/
 COPY --from=build /usr/local/lib/python3.9/site-packages/ /usr/local/lib/python3.9/site-packages/
-COPY . .
+
+COPY ./scripts/docker-entrypoint.sh /docker-entrypoint.sh
+
+COPY ./manage.py ./manage.py
+COPY ./bread ./bread
+COPY ./recipes ./recipes
+
+RUN python manage.py collectstatic
 
 USER guest
 
 EXPOSE 8000
 
-ENTRYPOINT ["gunicorn", "--bind", ":8000", "--workers", ${WORKERS}, "bread.wsgi"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 ###############################################################################
 FROM python:3.9 AS dev
