@@ -164,6 +164,26 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Storages
+# https://django-storages.readthedocs.io/en/latest/index.html
+
+STORAGE_DRIVER = os.getenv("STORAGE_DRIVER", "azure").lower()
+
+STORAGES = {
+    "photo": {
+        "driver": os.getenv("STORAGE_PHOTO_DRIVER", STORAGE_DRIVER),
+        "location": os.getenv("STORAGE_PHOTO_LOCATION", "photo"),
+    }
+}
+
+AZURE_ACCOUNT_NAME = os.getenv("AZURE_ACCOUNT_NAME")
+AZURE_ACCOUNT_KEY = os.getenv("AZURE_ACCOUNT_KEY")
+AZURE_CONTAINER = os.getenv("AZURE_CONTAINER")
+
+AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
+AWS_S3_ENDPOINT_URL = os.getenv("AWS_S3_ENDPOINT_URL")
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
