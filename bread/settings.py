@@ -167,7 +167,7 @@ USE_TZ = True
 # Storages
 # https://django-storages.readthedocs.io/en/latest/index.html
 
-STORAGE_DRIVER = os.getenv("STORAGE_DRIVER", "azure").lower()
+STORAGE_DRIVER = os.getenv("STORAGE_DRIVER", "file" if TESTING else "azure").lower()
 
 STORAGES = {
     "photo": {

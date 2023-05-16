@@ -13,8 +13,13 @@
 # limitations under the License.
 
 from django.conf import settings
+from django.core.files.storage import FileSystemStorage, Storage
 from storages.backends.azure_storage import AzureStorage
 from storages.backends.s3boto3 import S3Boto3Storage
+
+
+class PhotoStorageFile(FileSystemStorage):
+    pass
 
 
 class PhotoStorageAzure(AzureStorage):
@@ -27,7 +32,19 @@ class PhotoStorageS3(S3Boto3Storage):
     querystring_auth = False
 
 
-if settings.STORAGES["photo"]["driver"] == "s3":
-    photoStorage = PhotoStorageS3()
-else:
-    photoStorage = PhotoStorageAzure()
+DRIVERS = {
+    "s3": PhotoStorageS3,
+    "azure": PhotoStorageAzure,
+    "file": PhotoStorageFile,
+}
+
+
+def get_storage_class() -> Storage:
+    photoStorageDriver = settings.STORAGES["photo"]["driver"]
+
+    if photoStorageDriver not in DRIVERS:
+        raise ValueError(f"Unknown storage driver: {photoStorageDriver}")
+
+    photoStorage = DRIVERS[photoStorageDriver]()
+
+    return photoStorage
