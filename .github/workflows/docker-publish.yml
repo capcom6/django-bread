@@ -5,11 +5,42 @@ on:
   pull_request:
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.9"
+          cache: "pip"
+
+      - name: Create and start virtual environment
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+      - name: Run Tests
+        run: |
+          coverage run --source='.' manage.py test recipes
+          coverage xml -o coverage.xml
+
+      - name: Upload coverage reports to Codecov with GitHub Action
+        uses: codecov/codecov-action@v3
+
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-
+    needs: test
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
