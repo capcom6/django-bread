@@ -12,34 +12,39 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-
 from django.conf import settings
-from django.core.files.storage import FileSystemStorage
+from django.core.files.storage import FileSystemStorage, Storage
 from storages.backends.azure_storage import AzureStorage
 from storages.backends.s3boto3 import S3Boto3Storage
 
-driver = os.getenv("STORAGE_DRIVER", "azure").lower()
+
+class PhotoStorageFile(FileSystemStorage):
+    pass
 
 
 class PhotoStorageAzure(AzureStorage):
-    account_name = os.getenv("AZURE_ACCOUNT_NAME")
-    account_key = os.getenv("AZURE_ACCOUNT_KEY")
-    azure_container = os.getenv("AZURE_CONTAINER")
+    location = settings.STORAGES["photo"]["location"]
     expiration_secs = None
 
 
 class PhotoStorageS3(S3Boto3Storage):
-    region_name = os.getenv("AWS_S3_REGION_NAME")
-    endpoint_url = os.getenv("AWS_S3_ENDPOINT_URL")
-    bucket_name = os.getenv("AWS_STORAGE_BUCKET_NAME")
-    location = "photo"
+    location = settings.STORAGES["photo"]["location"]
+    querystring_auth = False
 
 
-if settings.TESTING:
-    photoStorage = FileSystemStorage(location=settings.MEDIA_ROOT)
-else:
-    if driver == "s3":
-        photoStorage = PhotoStorageS3()
-    else:
-        photoStorage = PhotoStorageAzure()
+DRIVERS = {
+    "s3": PhotoStorageS3,
+    "azure": PhotoStorageAzure,
+    "file": PhotoStorageFile,
+}
+
+
+def get_storage_class() -> Storage:
+    photoStorageDriver = settings.STORAGES["photo"]["driver"]
+
+    if photoStorageDriver not in DRIVERS:
+        raise ValueError(f"Unknown storage driver: {photoStorageDriver}")
+
+    photoStorage = DRIVERS[photoStorageDriver]()
+
+    return photoStorage

@@ -6,7 +6,7 @@ from django.core.files import File
 from django.db import models
 from PIL import Image
 
-from .storage import photoStorage
+from .storage import get_storage_class
 
 # Create your models here.
 
@@ -154,15 +154,16 @@ class Recipe(TimestampedModel):
         Program, on_delete=models.RESTRICT, verbose_name="программа"
     )
     weight = models.PositiveIntegerField("вес в граммах")
-    photo = models.ImageField("фотография", blank=True, null=True, storage=photoStorage)
+    photo = models.ImageField(
+        "фотография", blank=True, null=True, storage=get_storage_class()
+    )
     thumbnail = models.ImageField(
-        "фотография", blank=True, null=True, storage=photoStorage, editable=False
+        "фотография", blank=True, null=True, storage=get_storage_class(), editable=False
     )
     steps = models.TextField("подготовка", blank=True)
     after = models.TextField("завершение", blank=True)
 
     def save(self, *args, **kwargs) -> None:
-
         if self.photo and not (
             self.thumbnail
             and self.thumbnail.name.startswith(self.photo.name + "_thumb")
@@ -199,7 +200,7 @@ class RecipeIngredient(models.Model):
         verbose_name="рецепт",
         related_name="ingredients",
     )
-    position = models.PositiveIntegerField("№", editable=False)
+    position = models.PositiveIntegerField("№")
     ingredient = models.ForeignKey(
         Ingredient, on_delete=models.RESTRICT, verbose_name="ингредиент"
     )
@@ -217,7 +218,7 @@ class RecipeIngredient(models.Model):
         return None
 
     def save(self, *args, **kwargs):
-        self.position = (
+        self.position = self.position or (
             RecipeIngredient.objects.all().filter(recipe=self.recipe).count() + 1
         )
         super().save(*args, **kwargs)
