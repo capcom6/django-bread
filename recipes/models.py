@@ -209,10 +209,13 @@ class RecipeIngredient(models.Model):
     comment = models.CharField("комментарий", max_length=64, blank=True)
 
     def volume(self):
+        if self.measure.volume is None:
+            return None
+
         return self.quantity * self.measure.volume
 
     def weight(self):
-        for mw in self.ingredient.measureweight_set.all():
+        for mw in self.ingredient.measureweight_set.all():  # type: ignore
             if mw.measure == self.measure and mw.ingredient == self.ingredient:
                 return self.quantity * Decimal(mw.weight)
         return None
