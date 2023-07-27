@@ -51,6 +51,23 @@ class RecipesTestCase(TestCase):
         self.assertTemplateUsed(response, "recipes/recipe_detail.html")
         self.assertEqual(response.context["object"], Recipe.objects.get(id=1))
 
+    def test_recipes_random(self) -> None:
+        response = self.client.get(reverse("recipes:random"))
+
+        self.assertEqual(response.status_code, 302)
+
+        # self.assertRedirects(
+        #     response,
+        #     reverse("recipes:details", kwargs={"pk": 1}),
+        #     status_code=302,
+        # )
+
+    def test_recipes_random_404(self) -> None:
+        Recipe.objects.all().delete()
+
+        response = self.client.get(reverse("recipes:random"))
+        self.assertEqual(response.status_code, 404)
+
     def test_recipes_details_404(self):
         response: HttpResponse = self.client.get(
             reverse("recipes:details", kwargs={"pk": 100})
