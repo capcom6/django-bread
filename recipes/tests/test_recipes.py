@@ -74,3 +74,7 @@ class RecipesTestCase(TestCase):
         )  # type: ignore
 
         self.assertEqual(response.status_code, 404)
+
+    def test_recipes_str(self) -> None:
+        recipe: Recipe = Recipe.objects.get(id=1)
+        self.assertEqual(str(recipe), recipe.name)
