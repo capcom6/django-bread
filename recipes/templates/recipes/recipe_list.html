@@ -2,7 +2,12 @@
 {% load static %}
 
 {% block header %}
-<h1>{% block title %}Рецепты{% endblock %}</h1>
+<div class="ui menu">
+  <h1 class="ui header item">{% block title %}Рецепты{% endblock %}</h1>
+  <a class="item" href="{% url 'recipes:random' %}">
+    <i class="random icon"></i> Случайный рецепт
+  </a>
+</div>
 {% endblock %}
 
 {% block content %}

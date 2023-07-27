@@ -22,6 +22,7 @@ from . import views
 app_name = "recipes"
 urlpatterns = [
     path("", cache_page(60)(views.RecipesListView.as_view()), name="list"),
+    path("recipe/random", views.RandomRecipeView.as_view(), name="random"),
     path(
         "recipe/<int:pk>/",
         cache_page(3600)(views.RecipeDetailsView.as_view()),
