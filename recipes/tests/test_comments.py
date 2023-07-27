@@ -48,3 +48,7 @@ class CommentsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
         self.assertListEqual(list(response.context["comments"]), comments)
+
+    def test_comments_str(self) -> None:
+        comment = Comment.objects.get(id=1)
+        self.assertEqual(str(comment), comment.text)
