@@ -1,8 +1,7 @@
 from typing import Any
+
 from django.contrib import admin
-from django.forms import ModelChoiceField
 from django.http import HttpRequest
-from django.db.models import ForeignKey
 
 from ..models import *
 from .actions import comment_accept, comment_reject
