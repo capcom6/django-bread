@@ -15,16 +15,14 @@
 from typing import Any, Dict
 
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import (
-    HttpRequest,
-    HttpResponse,
-    HttpResponseBadRequest,
-    HttpResponseNotFound,
-)
+import django.http as http
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
+from django.views import View
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView
+
+from recipes import repositories
 
 from . import forms, models
 
@@ -71,18 +69,29 @@ class RecipeDetailsView(DetailView):
         )
 
 
+class RandomRecipeView(View):
+    def get(self, request: http.HttpRequest, *args, **kwargs) -> http.HttpResponse:
+        recipe = repositories.RecipesRepository.get_random()
+        if not recipe:
+            raise http.Http404()
+
+        return http.HttpResponseRedirect(
+            reverse("recipes:details", kwargs={"pk": recipe.pk})
+        )
+
+
 class CommentAddView(SuccessMessageMixin, CreateView):
     model = models.Comment
     form_class = forms.CommentForm
     success_message: str = "Комментарий добавлен. Он будет отображен после модерации."
 
-    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+    def post(self, request: http.HttpRequest, *args, **kwargs) -> http.HttpResponse:
         if "recipe_id" not in kwargs:
-            return HttpResponseBadRequest()
+            return http.HttpResponseBadRequest()
         recipe_id = kwargs["recipe_id"]
         self.recipe = models.Recipe.objects.get(pk=recipe_id)
         if not self.recipe:
-            return HttpResponseNotFound()
+            return http.HttpResponseNotFound()
 
         return super().post(request, *args, **kwargs)
 
