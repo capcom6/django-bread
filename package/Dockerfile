@@ -58,6 +58,7 @@ COPY ./scripts/docker-entrypoint.sh /docker-entrypoint.sh
 COPY ./manage.py ./manage.py
 COPY ./bread ./bread
 COPY ./recipes ./recipes
+COPY ./api ./api
 
 RUN python manage.py collectstatic
 

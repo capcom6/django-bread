@@ -208,6 +208,10 @@ class RecipeIngredient(models.Model):
     measure = models.ForeignKey(Measure, on_delete=models.RESTRICT, verbose_name="ЕИ")
     comment = models.CharField("комментарий", max_length=64, blank=True)
 
+    @property
+    def name(self):
+        return self.ingredient.name
+
     def volume(self):
         if self.measure.volume is None:
             return None

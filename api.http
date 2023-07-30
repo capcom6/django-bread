@@ -1,0 +1,16 @@
+@baseUrl=http://127.0.0.1:8000/api/v1
+
+###
+GET {{baseUrl}}/categories HTTP/1.1
+
+###
+GET {{baseUrl}}/programs HTTP/1.1
+
+###
+GET {{baseUrl}}/recipes HTTP/1.1
+
+###
+GET {{baseUrl}}/recipes/76 HTTP/1.1
+
+###
+GET {{baseUrl}}/recipes/76/comments HTTP/1.1
