@@ -1,5 +1,5 @@
 from django import urls
-from rest_framework import test
+from rest_framework import status, test
 
 from recipes import models
 
@@ -12,12 +12,18 @@ class ApiTestCase(test.APITestCase):
         url = urls.reverse("api:recipe-comments-list", kwargs={"pk": 1})
         response = self.client.get(url)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()
         self.assertIsInstance(data, dict)
         self.assertEqual(len(data["results"]), 1)
         self.assertEqual(data["results"][0]["text"], "Опубликованный комментарий")
+
+    def test_not_found_recipe_comments_get(self):
+        url = urls.reverse("api:recipe-comments-list", kwargs={"pk": 99})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_recipe_comments_post(self):
         url = urls.reverse("api:recipe-comments-list", kwargs={"pk": 1})
@@ -25,10 +31,11 @@ class ApiTestCase(test.APITestCase):
 
         response = self.client.post(url, {"text": "test"})
 
-        self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.json()["text"], "test")
+        data = response.json()
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(data["text"], "test")
 
         self.assertEqual(models.Comment.objects.count(), count_before + 1)
         self.assertEqual(
-            models.Comment.objects.get(text="test").state, models.Comment.STATE_NEW
+            models.Comment.objects.get(pk=data["id"]).state, models.Comment.STATE_NEW
         )
