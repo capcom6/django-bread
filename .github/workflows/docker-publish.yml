@@ -30,7 +30,7 @@ jobs:
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       - name: Run Tests
         run: |
-          coverage run --source='.' manage.py test recipes
+          coverage run --source='.' manage.py test recipes api
           coverage xml -o coverage.xml
 
       - name: Upload coverage reports to Codecov with GitHub Action

@@ -6,19 +6,19 @@ from recipes import models
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Category
-        fields = ("pk", "name")
+        fields = ("id", "name")
 
 
 class ProgramSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Program
-        fields = ("pk", "name", "duration")
+        fields = ("id", "name", "duration")
 
 
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Ingredient
-        fields = ("pk", "name")
+        fields = ("id", "name")
 
 
 class MeasureSerializer(serializers.ModelSerializer):
@@ -52,7 +52,7 @@ class RecipesListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Recipe
         fields = (
-            "pk",
+            "id",
             "name",
             "crust",
             "description",
@@ -71,7 +71,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Comment
-        fields = ("pk", "state", "text", "created_at", "updated_at")
+        fields = ("id", "state", "text", "created_at", "updated_at")
 
 
 class RecipeDetailsSerializer(serializers.ModelSerializer):
@@ -86,7 +86,7 @@ class RecipeDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Recipe
         fields = (
-            "pk",
+            "id",
             "name",
             "crust",
             "description",
