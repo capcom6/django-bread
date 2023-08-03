@@ -28,7 +28,7 @@ resource "docker_service" "app" {
 
   task_spec {
     container_spec {
-      image = docker_image.app.image_id
+      image = docker_image.app.name
 
       env = {
         WEBSITE_HOSTNAME = var.app-host
@@ -49,7 +49,7 @@ resource "docker_service" "app" {
 
     resources {
       limits {
-        nano_cpus    = var.cpu-limit
+        # nano_cpus    = var.cpu-limit
         memory_bytes = var.memory-limit
       }
 
@@ -60,6 +60,21 @@ resource "docker_service" "app" {
     }
   }
 
+  # Swarm Gateway support
+  labels {
+    label = "gateway.enabled"
+    value = true
+  }
+  labels {
+    label = "gateway.server.host"
+    value = var.app-host
+  }
+  labels {
+    label = "gateway.server.port"
+    value = 8000
+  }
+
+  # Traefik support
   labels {
     label = "traefik.enable"
     value = true

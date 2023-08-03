@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
-    bucket   = "cq55609-bread"
-    key      = "terraform/terraform.tfstate"
+    bucket   = "38e04e71-private"
+    key      = "terraform/django-bread.tfstate"
     region   = "ru-1"
     endpoint = "s3.timeweb.com"
 
