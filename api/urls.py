@@ -11,7 +11,7 @@ router.register("programs", views.ProgramsViewSet)
 app_name = "api"
 urlpatterns = [
     path("", include(router.urls)),
-    path("recipes/", views.RecipesListView.as_view(), name="recipe-list"),
+    path("recipes", views.RecipesListView.as_view(), name="recipe-list"),
     path("recipes/<int:pk>", views.RecipeDetailsView.as_view(), name="recipe-detail"),
     path(
         "recipes/<int:pk>/comments",
