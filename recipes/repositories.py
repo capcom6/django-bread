@@ -53,7 +53,7 @@ class RecipesRepository(BaseRepository):
 
         random_id = random.randint(1, max_id)
 
-        return models.Recipe.objects.filter(id__gte=random_id).first()
+        return models.Recipe.objects.filter(id__gte=random_id).order_by("id").first()
 
 
 class CommentsRepository(BaseRepository):
