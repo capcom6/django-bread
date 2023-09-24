@@ -28,6 +28,7 @@ class RecipeIngredientAdminInline(admin.TabularInline):
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     list_filter = ("category",)
+    search_fields = ("name",)
     inlines = (RecipeIngredientAdminInline, RecipeCommentInline)
 
 
