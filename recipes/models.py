@@ -234,10 +234,10 @@ class RecipeIngredient(models.Model):
         return f"{self.quantity} {self.measure.name} {self.ingredient.name}"
 
     class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=["recipe", "position"], name="unique_recipeingredient_position"
-            )
+        indexes = [
+            models.Index(
+                fields=["recipe", "position"], name="idx_recipeingredient_position"
+            ),
         ]
         ordering = ["recipe", "position"]
         verbose_name = "ингредиент рецепта"

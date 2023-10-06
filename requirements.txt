@@ -2,6 +2,7 @@ Django==4.1.10
 Pillow==10.0.1
 azure-storage-blob==12.13.0
 boto3==1.26.24
+django-admin-sortable2==2.1.10
 django-storages==1.12.3
 djangorestframework==3.14.0
 mysqlclient==2.1.1

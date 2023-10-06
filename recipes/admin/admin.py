@@ -3,6 +3,8 @@ from typing import Any
 from django.contrib import admin
 from django.http import HttpRequest
 
+from adminsortable2.admin import SortableTabularInline, SortableAdminBase
+
 from ..models import *
 from .actions import comment_accept, comment_reject
 
@@ -18,15 +20,16 @@ class RecipeCommentInline(admin.TabularInline):
     ordering = ("-created_at",)
 
 
-class RecipeIngredientAdminInline(admin.TabularInline):
+class RecipeIngredientAdminInline(SortableTabularInline):
     model = RecipeIngredient
+    ordering = ["position"]
 
     def get_queryset(self, request):
         return super().get_queryset(request).select_related("ingredient", "measure")
 
 
 @admin.register(Recipe)
-class RecipeAdmin(admin.ModelAdmin):
+class RecipeAdmin(SortableAdminBase, admin.ModelAdmin):
     list_filter = ("category",)
     search_fields = ("name",)
     inlines = (RecipeIngredientAdminInline, RecipeCommentInline)

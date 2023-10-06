@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "recipes.apps.RecipesConfig",
     "api.apps.ApiConfig",
     "rest_framework",
+    "adminsortable2",
 ]
 
 if DEBUG:
