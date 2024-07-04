@@ -84,10 +84,10 @@ We believe that this application will be a valuable tool for anyone passionate a
 ### Built With
 
 * [![Python](https://img.shields.io/badge/Python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11-000000?style=for-the-badge)](https://www.python.org/downloads/)
-* [![Django](https://img.shields.io/badge/Django-4.1-000000?style=for-the-badge)](https://www.djangoproject.com/)
-* [![Pillow](https://img.shields.io/badge/Pillow-9.4-000000?style=for-the-badge)](https://python-pillow.org/)
+* [![Django](https://img.shields.io/badge/Django-4.2-000000?style=for-the-badge)](https://www.djangoproject.com/)
+* [![Pillow](https://img.shields.io/badge/Pillow-10.3-000000?style=for-the-badge)](https://python-pillow.org/)
 * [![Django Storages](https://img.shields.io/badge/django_storages-1.12-000000?style=for-the-badge)](https://django-storages.readthedocs.io/en/latest/)
-* [![Django REST Framework](https://img.shields.io/badge/djangorestframework-3.14-000000?style=for-the-badge)](https://www.django-rest-framework.org/)
+* [![Django REST Framework](https://img.shields.io/badge/djangorestframework-3.15-000000?style=for-the-badge)](https://www.django-rest-framework.org/)
 * and others, see [requirements.txt](requirements.txt)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
