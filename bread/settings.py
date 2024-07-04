@@ -176,7 +176,10 @@ STORAGES = {
     "photo": {
         "driver": os.getenv("STORAGE_PHOTO_DRIVER", STORAGE_DRIVER),
         "location": os.getenv("STORAGE_PHOTO_LOCATION", "photo"),
-    }
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
 }
 
 AZURE_ACCOUNT_NAME = os.getenv("AZURE_ACCOUNT_NAME")
