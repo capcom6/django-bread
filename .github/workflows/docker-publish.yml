@@ -2,6 +2,8 @@ name: Docker
 
 on:
   push:
+    tags:
+      - v*
   pull_request:
 
 jobs:
@@ -41,6 +43,7 @@ jobs:
     permissions:
       contents: read
     needs: test
+    if: github.actor != 'dependabot[bot]' # skip on dependabot because it's not allowed to access secrets
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
