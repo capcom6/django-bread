@@ -11,6 +11,9 @@ migration:
 	python manage.py migrate \
 		&& python manage.py createcachetable
 
+superuser:
+	python manage.py createsuperuser
+
 up-dev:
 	docker-compose -f deployments/docker-compose-dev.yml up --build
 
