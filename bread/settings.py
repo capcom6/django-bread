@@ -14,30 +14,41 @@ import os
 import sys
 from pathlib import Path
 
-import dotenv
-
-dotenv.load_dotenv()
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.FileAwareEnv(
+    # set casting, default value
+    DEBUG=(bool, False),
+    CACHE_DISABLE=(bool, False),
+    ALLOWED_HOSTS=(list, ["localhost", "127.0.0.1"]),
+    DATABASE_URL=(str, f"sqlite:///{BASE_DIR}/db.sqlite3"),
+    LANGUAGE_CODE=(str, "ru-ru"),
+    TIME_ZONE=(str, "UTC"),
+)
+
+# Take environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv(
-    "SECRET_KEY", "django-insecure-fr+mn0pd38qx(m5(#g(!a!vpu0i3bim5&_hhx0%4wrav#m#i65"
+SECRET_KEY = env(
+    "SECRET_KEY", default="django-insecure-8k6v$!&*!&*!&*!&*!&*!&*!&*!&*!&*!&*!&*!"
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", True) == "True"
+DEBUG = env("DEBUG")
 TESTING = len(sys.argv) > 1 and sys.argv[1] == "test"
 
-ALLOWED_HOSTS = [os.getenv("WEBSITE_HOSTNAME", "127.0.0.1")]
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 CSRF_TRUSTED_ORIGINS = [
-    "https://" + os.getenv("WEBSITE_HOSTNAME", "127.0.0.1"),
-    "http://" + os.getenv("WEBSITE_HOSTNAME", "127.0.0.1"),
+    scheme + "://" + host
+    for host in env.list("ALLOWED_HOSTS")
+    for scheme in ["http", "https"]
 ]
 
 INTERNAL_IPS = [
@@ -96,7 +107,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "bread.wsgi.application"
-
+ASGI_APPLICATION = "bread.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -109,21 +120,10 @@ if TESTING:
     }
 else:
     DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.mysql",
-            "NAME": os.getenv("DB_NAME"),
-            "USER": os.getenv("DB_USER"),
-            "PASSWORD": os.getenv("DB_PASSWORD"),
-            "HOST": os.getenv("DB_HOST", "127.0.0.1"),
-            "PORT": os.getenv("DB_PORT", 3306),
-            "OPTIONS": {
-                "ssl": {},
-                "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
-            },
-        }
+        "default": env.db(),
     }
 
-if os.getenv("CACHE_DISABLE", False) == "True" or TESTING:
+if env("CACHE_DISABLE") or TESTING:
     CACHES = {
         "default": {
             "BACKEND": "django.core.cache.backends.dummy.DummyCache",
@@ -159,9 +159,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = "ru-ru"
+LANGUAGE_CODE = env("LANGUAGE_CODE")
 
-TIME_ZONE = "UTC"
+TIME_ZONE = env("TIME_ZONE")
 
 USE_I18N = True
 
@@ -170,25 +170,25 @@ USE_TZ = True
 # Storages
 # https://django-storages.readthedocs.io/en/latest/index.html
 
-STORAGE_DRIVER = os.getenv("STORAGE_DRIVER", "file" if TESTING else "azure").lower()
+STORAGE_DRIVER = env("STORAGE_DRIVER", default="file" if TESTING else "azure").lower()
 
 STORAGES = {
     "photo": {
-        "driver": os.getenv("STORAGE_PHOTO_DRIVER", STORAGE_DRIVER),
-        "location": os.getenv("STORAGE_PHOTO_LOCATION", "photo"),
+        "driver": env("STORAGE_PHOTO_DRIVER", default=STORAGE_DRIVER),
+        "location": env("STORAGE_PHOTO_LOCATION", default="photo"),
     },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
-AZURE_ACCOUNT_NAME = os.getenv("AZURE_ACCOUNT_NAME")
-AZURE_ACCOUNT_KEY = os.getenv("AZURE_ACCOUNT_KEY")
-AZURE_CONTAINER = os.getenv("AZURE_CONTAINER")
+AZURE_ACCOUNT_NAME = env("AZURE_ACCOUNT_NAME", default=None)
+AZURE_ACCOUNT_KEY = env("AZURE_ACCOUNT_KEY", default=None)
+AZURE_CONTAINER = env("AZURE_CONTAINER", default=None)
 
-AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
-AWS_S3_ENDPOINT_URL = os.getenv("AWS_S3_ENDPOINT_URL")
-AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME", default=None)
+AWS_S3_ENDPOINT_URL = env("AWS_S3_ENDPOINT_URL", default=None)
+AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME", default=None)
 
 
 # Static files (CSS, JavaScript, Images)
