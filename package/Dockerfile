@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM python:3.9-alpine AS base
+FROM python:3.13-alpine AS base
 
 # RUN apk update && apk add mysql-client
 
@@ -51,7 +51,7 @@ RUN apk update && apk add --no-cache \
     libjpeg-turbo-dev
 
 COPY --from=build /usr/local/bin/ /usr/local/bin/
-COPY --from=build /usr/local/lib/python3.9/site-packages/ /usr/local/lib/python3.9/site-packages/
+COPY --from=build /usr/local/lib/python3.13/site-packages/ /usr/local/lib/python3.13/site-packages/
 
 COPY ./scripts/docker-entrypoint.sh /docker-entrypoint.sh
 
@@ -69,7 +69,7 @@ EXPOSE 8000
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 ###############################################################################
-FROM python:3.9 AS dev
+FROM python:3.13 AS dev
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
